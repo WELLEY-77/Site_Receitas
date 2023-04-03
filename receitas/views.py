@@ -4,7 +4,7 @@ from .models import Receita
 
 def receita(request):
 
-    receitas = Receita.objects.all()
+    receitas = Receita.objects.filter(publicada=True)
                  
     dados = {
         'receitas':receitas,
