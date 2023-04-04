@@ -20,3 +20,7 @@ def imagem(request, receita_id):
         'receita' : receita
     }
     return render(request, 'receitas/receita.html', receita_a_exibir)
+
+
+def buscar(request):
+    return render(request, 'receitas/buscar.html')
