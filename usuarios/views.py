@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
+from django.contrib import auth
 
 def cadastro(request):
 
@@ -45,7 +46,15 @@ def login(request):
             return redirect('login')
         
         print(email, senha)
-        return redirect('dashboard')
+
+        if User.objects.filter(email=email).exists():
+            nome = User.objects.filter(email=email).values_list('username', flat=True).get()
+            user = auth.authenticate(request, username=nome, password=senha)
+            print(nome)
+            if user is not None:
+                auth.login(request, user)
+                print('Login efetuado com sucesso')
+                return redirect('dashboard')
 
     return render(request, 'usuarios/login.html')
 
