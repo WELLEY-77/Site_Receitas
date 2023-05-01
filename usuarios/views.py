@@ -23,11 +23,11 @@ def cadastro(request):
             messages.error(request, 'As senhas não são iguais')
             return redirect('cadastro')
 
-        if usuario_cadastrado(email, email):
+        if User.objects.filter(email=email).exists():
             messages.warning(request, 'Usuario já cadastrado')
             return redirect('cadastro')
         
-        if usuario_cadastrado(username, nome):
+        if User.objects.filter(username=nome).exists():
             messages.warning(request, 'Usuario já cadastrado')
             return redirect('cadastro')
         
@@ -102,5 +102,3 @@ def campo_vazio(campo):
 def senhas_sao_diferentes(senha, senha2):
     return senha != senha2
 
-def usuario_cadastrado(dados, dados2):
-    return User.objects.filter(dados = dados2).exists()
