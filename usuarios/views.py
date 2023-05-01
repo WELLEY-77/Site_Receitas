@@ -11,19 +11,23 @@ def cadastro(request):
         senha = request.POST['password']
         senha2 = request.POST['password2']
 
-        if not nome.strip():
+        if campo_vazio(nome):
             messages.warning(request, 'O campo não pode ficar em branco! ')
             return redirect('cadastro')
         
-        if not email.strip():
+        if campo_vazio(email):
             messages.warning(request, 'O campo não pode ficar em branco! ')
             return redirect('cadastro')
         
-        if senha != senha2:
+        if senhas_sao_diferentes(senha, senha2):
             messages.error(request, 'As senhas não são iguais')
             return redirect('cadastro')
 
-        if User.objects.filter(email=email).exists():
+        if usuario_cadastrado(email, email):
+            messages.warning(request, 'Usuario já cadastrado')
+            return redirect('cadastro')
+        
+        if usuario_cadastrado(username, nome):
             messages.warning(request, 'Usuario já cadastrado')
             return redirect('cadastro')
         
@@ -92,4 +96,11 @@ def cria_receita(request):
     else:
         return render(request, 'usuarios/cria_receita.html')
 
+def campo_vazio(campo):
+    return not campo.strip()
 
+def senhas_sao_diferentes(senha, senha2):
+    return senha != senha2
+
+def usuario_cadastrado(dados, dados2):
+    return User.objects.filter(dados = dados2).exists()
