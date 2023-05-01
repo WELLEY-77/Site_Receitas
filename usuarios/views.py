@@ -46,7 +46,7 @@ def login(request):
         email = request.POST['email']
         senha = request.POST['senha']
 
-        if email == '' or senha == '':
+        if campo_vazio(email) or campo_vazio(senha):
             messages.warning(request, 'Os campos não podem ficar em branco')
             return redirect('login')
         
